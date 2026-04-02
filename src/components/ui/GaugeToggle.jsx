@@ -1,39 +1,52 @@
-// GaugeToggle — switches between arc and bar gauge views
 export default function GaugeToggle({ view, onToggle }) {
   return (
-    <button
-      onClick={onToggle}
-      aria-label={`Switch to ${view === 'arc' ? 'bar' : 'arc'} gauge`}
-      className="flex items-center gap-1 px-3 py-1.5 rounded-pill border-2 text-sm font-body font-semibold transition-all"
+    <div 
+      className="flex items-center p-1 rounded-full"
       style={{
-        borderColor: '#930018',
-        backgroundColor: 'transparent',
-        color: '#930018',
-        borderRadius: '999px',
-        fontFamily: '"DM Sans", system-ui, sans-serif',
+        backgroundColor: 'rgba(147,0,24,0.06)',
+        border: '1px solid rgba(147,0,24,0.1)'
       }}
     >
-      {view === 'arc' ? (
-        // Bar icon
-        <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
-          <rect x="0" y="0" width="18" height="3" rx="1.5" fill="#930018" />
-          <rect x="0" y="5.5" width="13" height="3" rx="1.5" fill="#930018" />
-          <rect x="0" y="11" width="9" height="3" rx="1.5" fill="#930018" />
+      {/* Arc Mode Button */}
+      <button
+        onClick={() => view !== 'arc' && onToggle()}
+        aria-label="Switch to Arc View"
+        style={{
+          width: 32, height: 32,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          borderRadius: '50%',
+          border: 'none', cursor: 'pointer',
+          backgroundColor: view === 'arc' ? '#930018' : 'transparent',
+          color: view === 'arc' ? '#fff' : '#930018',
+          transition: 'all 0.2s ease-in-out'
+        }}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+          <path d="M4 18 A 8 8 0 0 1 20 18" />
+          <line x1="12" y1="18" x2="12" y2="10" />
         </svg>
-      ) : (
-        // Arc icon
-        <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
-          <path
-            d="M1 13 A8 8 0 0 1 17 13"
-            stroke="#930018"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            fill="none"
-          />
-          <line x1="9" y1="13" x2="9" y2="6" stroke="#930018" strokeWidth="2" strokeLinecap="round" />
+      </button>
+
+      {/* Bar Mode Button */}
+      <button
+        onClick={() => view !== 'bar' && onToggle()}
+        aria-label="Switch to Bar View"
+        style={{
+          width: 32, height: 32,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          borderRadius: '50%',
+          border: 'none', cursor: 'pointer',
+          backgroundColor: view === 'bar' ? '#930018' : 'transparent',
+          color: view === 'bar' ? '#fff' : '#930018',
+          transition: 'all 0.2s ease-in-out',
+          marginLeft: 4
+        }}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+           <rect x="3" y="10" width="18" height="4" rx="1" fill={view === 'bar' ? '#fff' : 'currentColor'} stroke="none" />
+           <line x1="3" y1="14" x2="21" y2="14" opacity="0.3" />
         </svg>
-      )}
-      <span className="text-xs">{view === 'arc' ? 'Bar' : 'Arc'}</span>
-    </button>
+      </button>
+    </div>
   )
 }

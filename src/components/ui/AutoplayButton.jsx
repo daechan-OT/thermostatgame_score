@@ -1,24 +1,43 @@
-// AutoplayButton — pill toggle; active = red filled, inactive = outlined
 export default function AutoplayButton({ active, onToggle }) {
   return (
     <button
       onClick={onToggle}
-      aria-label={active ? 'Disable autoplay' : 'Enable autoplay'}
-      className="flex items-center gap-1 px-3 py-1.5 text-sm font-semibold transition-all"
+      aria-label="Toggle Autoplay"
       style={{
-        borderRadius: '999px',
-        border: '2px solid #930018',
-        backgroundColor: active ? '#930018' : 'transparent',
-        color: active ? '#fff' : '#930018',
-        fontFamily: '"DM Sans", system-ui, sans-serif',
-        minWidth: 72,
-        justifyContent: 'center',
+        width: 44,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: active ? '#930018' : 'rgba(0,0,0,0.1)',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 2px',
+        border: 'none',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        position: 'relative'
       }}
     >
-      <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor">
-        <path d="M0 0L10 6L0 12V0Z" />
-      </svg>
-      <span className="text-xs">Auto</span>
+      <div 
+        style={{
+          width: 20,
+          height: 20,
+          backgroundColor: '#fff',
+          borderRadius: '50%',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          transform: active ? 'translateX(20px)' : 'translateX(0)'
+        }}
+      >
+        <svg 
+           width="10" height="10" viewBox="0 0 24 24" fill={active ? '#930018' : '#999'} 
+           style={{ marginLeft: active ? 0 : 1 }}
+        >
+          <path d="M5 3l14 9-14 9V3z" />
+        </svg>
+      </div>
     </button>
   )
 }

@@ -1,129 +1,147 @@
-// GaugeArc — filled half-circle with smooth gradient + rotating needle
-// Design: smooth blue→pink gradient fill, clean needle, no tick marks/labels
-
-const CX = 140
-const CY = 138
-const R  = 122
-
-// -5 → −90° (left), 0 → 0° (top/12 o'clock), +5 → +90° (right)
-function energyToAngle(e) {
-  return (e / 5) * 90
-}
+// GaugeArc — filled half-circle with high-fidelity design metrics
+// Matches the blue-white-red gradient, radial markers, and detailed labeling from the reference image.
 
 export default function GaugeArc({ energy }) {
-  const angle = energyToAngle(energy)
+  const R = 114
+  const CX = 140
+  const CY = 152 
 
-  // Semicircle flat-bottom path
-  const lx = CX - R   // left base point
-  const rx = CX + R   // right base point
-  const semicircle = `M ${lx} ${CY} A ${R} ${R} 0 0 1 ${rx} ${CY} Z`
+  // Semicircle path
+  const semicircle = `M ${CX - R} ${CY} A ${R} ${R} 0 0 1 ${CX + R} ${CY} Z`
+
+  // Needle angle: -90 (frozen/left) -> 0 (balance) -> 90 (meltdown/right)
+  const angle = (energy / 5) * 90
+
+  // Tick marks and labels positions
+  const TICKS = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
 
   return (
-    <div className="flex flex-col items-center w-full" style={{ padding: '12px 0 4px' }}>
+    <div className="flex flex-col items-center w-full" style={{ padding: '0 0 2px' }}>
       <svg
-        viewBox="0 0 280 165"
+        viewBox="0 0 280 185"
         width="100%"
-        style={{ maxWidth: 340, display: 'block', overflow: 'visible' }}
+        style={{ maxWidth: 360, display: 'block', overflow: 'visible' }}
         aria-label={`Store Energy: ${energy}`}
       >
         <defs>
-          {/* Smooth gradient: periwinkle blue → lavender → blush → salmon pink */}
+          {/* Blue (Left) -> White (Center) -> Red (Right) */}
           <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%"   stopColor="#B0BAFA" />
-            <stop offset="28%"  stopColor="#CEC5F5" />
-            <stop offset="50%"  stopColor="#F2E4EE" />
-            <stop offset="72%"  stopColor="#FFCDD6" />
-            <stop offset="100%" stopColor="#F2A0AB" />
+            <stop offset="0%"   stopColor="#AABBFF" />
+            <stop offset="42%"  stopColor="#E6ECFF" />
+            <stop offset="50%"  stopColor="#FFFFFF" />
+            <stop offset="58%"  stopColor="#FFE6E9" />
+            <stop offset="100%" stopColor="#FF667D" />
           </linearGradient>
 
-          {/* Subtle inner shadow effect via radial gradient overlay */}
-          <radialGradient id="gaugeVignette" cx="50%" cy="100%" r="85%" fx="50%" fy="100%">
-            <stop offset="0%"   stopColor="#FFF9EF" stopOpacity="0.18" />
-            <stop offset="100%" stopColor="#FFF9EF" stopOpacity="0" />
-          </radialGradient>
+          {/* Mask for the center hole */}
+          <mask id="gaugeMask">
+            <rect width="280" height="185" fill="white" />
+            <circle cx={CX} cy={CY} r="18" fill="black" />
+          </mask>
         </defs>
 
-        {/* Filled semicircle — gradient */}
-        <path d={semicircle} fill="url(#gaugeGrad)" />
-
-        {/* Vignette overlay for depth */}
-        <path d={semicircle} fill="url(#gaugeVignette)" />
-
-        {/* Thin bottom edge line */}
-        <line
-          x1={lx} y1={CY}
-          x2={rx} y2={CY}
-          stroke="#FFF9EF"
-          strokeWidth="3"
+        {/* Shadow/Outline underlying */}
+        <path
+          d={`M ${CX - R - 2} ${CY} A ${R + 2} ${R + 2} 0 0 1 ${CX + R + 2} ${CY} Z`}
+          fill="rgba(64,0,15,0.03)"
         />
 
-        {/* End Labels */}
-        <text
-          x={lx} y={CY + 18}
-          textAnchor="start"
-          style={{
-            fontFamily: '"DM Sans", system-ui, sans-serif',
-            fontSize: 10,
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            fill: '#40000F',
-            opacity: 0.4,
-          }}
-        >
-          Deepfreeze
-        </text>
-        <text
-          x={rx} y={CY + 18}
-          textAnchor="end"
-          style={{
-            fontFamily: '"DM Sans", system-ui, sans-serif',
-            fontSize: 10,
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            fill: '#40000F',
-            opacity: 0.4,
-          }}
-        >
-          Meltdown
-        </text>
+        {/* Main colored gauge */}
+        <path d={semicircle} fill="url(#gaugeGrad)" mask="url(#gaugeMask)" />
 
-        {/* Needle */}
+        {/* Radial lines and numeric labels */}
+        {TICKS.map((val) => {
+          const a = (val / 5) * 90 - 90 
+          const rad = (a * Math.PI) / 180
+          const x2 = CX + R * Math.cos(rad)
+          const y2 = CY + R * Math.sin(rad)
+          const x1 = CX + 24 * Math.cos(rad) 
+          const y1 = CY + 24 * Math.sin(rad)
+          
+          return (
+            <g key={val}>
+              <line
+                x1={x1} y1={y1}
+                x2={x2} y2={y2}
+                stroke="rgba(147,0,24,0.12)"
+                strokeWidth="1"
+              />
+              {/* Labels above ticks */}
+              <text
+                x={CX + (R + 20) * Math.cos(rad)}
+                y={CY + (R + 20) * Math.sin(rad)}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                style={{
+                  fontFamily: '"DM Sans", sans-serif',
+                  fontSize: val === 0 || val === 5 || val === -5 ? 8 : 6,
+                  fontWeight: val === 0 || val === 5 || val === -5 ? 800 : 700,
+                  fill: val === 0 ? '#40000F' : (val > 0 ? '#930018' : '#004E93')
+                }}
+              >
+                {val === 0 ? 'Balance' : (Math.abs(val) === 5 ? 'Lost' : (val > 0 ? `+${val}` : val))}
+              </text>
+            </g>
+          )
+        })}
+
+        {/* Bottom Semantic Labels */}
+        <g style={{ opacity: 0.8 }}>
+          <text
+            x={20} y={170}
+            style={{ fontFamily: '"DM Sans", sans-serif', fontSize: 9, fontWeight: 800, fill: '#004E93', textAnchor: 'start' }}
+          >
+            <tspan x={20} dy="0">Disengaged</tspan>
+            <tspan x={20} dy="11">Deepfreeze</tspan>
+          </text>
+          <text
+            x={260} y={170}
+            style={{ fontFamily: '"DM Sans", sans-serif', fontSize: 9, fontWeight: 800, fill: '#930018', textAnchor: 'end' }}
+          >
+            <tspan x={260} dy="0">Messy</tspan>
+            <tspan x={260} dy="11">Meltdown</tspan>
+          </text>
+        </g>
+
+        {/* Tapered Rounded Needle */}
         <g
           style={{
             transform: `rotate(${angle}deg)`,
             transformOrigin: `${CX}px ${CY}px`,
-            transition: 'transform 600ms ease-in-out',
+            transition: 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)',
           }}
         >
-          {/* Needle shaft — tapered look via two overlapping lines */}
-          <line
-            x1={CX} y1={CY - 4}
-            x2={CX} y2={CY - R + 16}
-            stroke="#40000F"
-            strokeWidth="2.5"
-            strokeLinecap="round"
+          <path
+            d={`
+              M ${CX - 5} ${CY} 
+              A 5 5 0 0 0 ${CX + 5} ${CY}
+              L ${CX + 1.5} ${CY - R + 26}
+              A 1.5 1.5 0 0 0 ${CX - 1.5} ${CY - R + 26}
+              Z
+            `}
+            fill="#930018"
           />
         </g>
 
-        {/* Pivot dot (drawn on top, not rotated) */}
-        <circle cx={CX} cy={CY} r="7"  fill="#FFF9EF" />
-        <circle cx={CX} cy={CY} r="4"  fill="#40000F" />
+        {/* Semi-circular Hub Cover */}
+        <path
+           d={`M ${CX - 18} ${CY} A 18 18 0 0 1 ${CX + 18} ${CY} Z`}
+           fill="#FFF9EF"
+        />
+        <circle cx={CX} cy={CY} r="6"  fill="#40000F" />
         <circle cx={CX} cy={CY} r="2"  fill="#FFF9EF" />
       </svg>
 
-      {/* Energy value below arc */}
+      {/* Energy value below arc (numeric feedback) */}
       <div
         style={{
           fontFamily: '"Playfair Display", Georgia, serif',
-          fontSize: 30,
+          fontSize: 32,
           fontWeight: 700,
-          color: '#930018',
+          color: energy === 0 ? '#40000F' : (energy > 0 ? '#930018' : '#004E93'),
           lineHeight: 1,
-          marginTop: 2,
+          marginTop: 4,
           transition: 'all 600ms ease-in-out',
-          letterSpacing: '-0.01em',
         }}
       >
         {energy > 0 ? `+${energy}` : energy}
