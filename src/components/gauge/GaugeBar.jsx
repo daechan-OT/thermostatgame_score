@@ -69,21 +69,50 @@ export default function GaugeBar({ energy }) {
       </div>
 
       {/* Labels */}
-      <div className="flex justify-between mt-1 px-0">
-        {[-5,-4,-3,-2,-1,0,1,2,3,4,5].map(val => (
-          <span
-            key={val}
-            style={{
-              fontSize: 10,
-              color: val === 0 ? '#40000F' : 'rgba(64,0,15,0.45)',
-              fontWeight: val === 0 ? '700' : '400',
-              fontFamily: '"DM Sans", sans-serif',
-              width: val === 0 ? 'auto' : undefined,
-            }}
-          >
-            {val}
-          </span>
-        ))}
+      <div className="flex justify-between items-center mt-1 px-0" style={{ position: 'relative' }}>
+        <span
+          style={{
+            fontSize: 9,
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            color: '#40000F',
+            opacity: 0.4,
+            fontFamily: '"DM Sans", sans-serif',
+          }}
+        >
+          Deepfreeze
+        </span>
+
+        <div className="flex flex-1 justify-between px-4">
+          {[-5,-4,-3,-2,-1,0,1,2,3,4,5].map(val => (
+            <span
+              key={val}
+              style={{
+                fontSize: 10,
+                color: val === 0 ? '#40000F' : 'rgba(64,0,15,0.45)',
+                fontWeight: val === 0 ? '700' : '400',
+                fontFamily: '"DM Sans", sans-serif',
+              }}
+            >
+              {val}
+            </span>
+          ))}
+        </div>
+
+        <span
+          style={{
+            fontSize: 9,
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            color: '#40000F',
+            opacity: 0.4,
+            fontFamily: '"DM Sans", sans-serif',
+          }}
+        >
+          Meltdown
+        </span>
       </div>
 
       {/* Floating current value label */}

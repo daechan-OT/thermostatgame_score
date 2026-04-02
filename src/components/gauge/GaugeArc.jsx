@@ -21,7 +21,7 @@ export default function GaugeArc({ energy }) {
   return (
     <div className="flex flex-col items-center w-full" style={{ padding: '12px 0 4px' }}>
       <svg
-        viewBox="0 0 280 155"
+        viewBox="0 0 280 165"
         width="100%"
         style={{ maxWidth: 340, display: 'block', overflow: 'visible' }}
         aria-label={`Store Energy: ${energy}`}
@@ -56,6 +56,38 @@ export default function GaugeArc({ energy }) {
           stroke="#FFF9EF"
           strokeWidth="3"
         />
+
+        {/* End Labels */}
+        <text
+          x={lx} y={CY + 18}
+          textAnchor="start"
+          style={{
+            fontFamily: '"DM Sans", system-ui, sans-serif',
+            fontSize: 10,
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            fill: '#40000F',
+            opacity: 0.4,
+          }}
+        >
+          Deepfreeze
+        </text>
+        <text
+          x={rx} y={CY + 18}
+          textAnchor="end"
+          style={{
+            fontFamily: '"DM Sans", system-ui, sans-serif',
+            fontSize: 10,
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            fill: '#40000F',
+            opacity: 0.4,
+          }}
+        >
+          Meltdown
+        </text>
 
         {/* Needle */}
         <g

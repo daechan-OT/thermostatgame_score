@@ -4,59 +4,16 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Pill from '../ui/Pill.jsx'
 
-const COUNTDOWN_S = 5
-const CIRCUMFERENCE = 2 * Math.PI * 18
-
 export default function ChoiceCard({
   card,
   selectedOption,
   phase,         // 'reading' | 'revealed' | 'animating'
-  autoplay,
   onSelectOption,
-  onConfirm,
-  onAcknowledge,
 }) {
-  const [countdown, setCountdown] = useState(COUNTDOWN_S)
-  const intervalRef = useRef(null)
-  const firedRef = useRef(false)
-
-  // Autoplay countdown only applies in 'revealed' phase (on "Understood" button)
-  useEffect(() => {
-    if (phase !== 'revealed' || !autoplay) return
-    firedRef.current = false
-    setCountdown(COUNTDOWN_S)
-
-    intervalRef.current = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(intervalRef.current)
-          if (!firedRef.current) {
-            firedRef.current = true
-            onAcknowledge()
-          }
-          return 0
-        }
-        return prev - 1
-      })
-    }, 1000)
-
-    return () => clearInterval(intervalRef.current)
-  }, [phase, autoplay, card?.id])
-
-  const handleUnderstood = () => {
-    clearInterval(intervalRef.current)
-    firedRef.current = true
-    onAcknowledge()
-  }
-
   const chosen = card.options.find(o => o.id === selectedOption)
   const impactVariant = chosen
-    ? chosen.energyImpact > 0 ? 'negative' : chosen.energyImpact < 0 ? 'positive' : 'neutral'
+    ? (chosen.energyImpact === 'balance' ? 'neutral' : (chosen.energyImpact > 0 ? 'negative' : (chosen.energyImpact < 0 ? 'positive' : 'neutral')))
     : 'neutral'
-
-  const progress = (phase === 'revealed' && autoplay)
-    ? (countdown / COUNTDOWN_S) * CIRCUMFERENCE
-    : CIRCUMFERENCE
 
   return (
     <motion.div
@@ -154,7 +111,9 @@ export default function ChoiceCard({
                 <div className="flex items-center gap-2 mb-2">
                   <span style={{ fontSize: 16 }}>💡</span>
                   <Pill variant={impactVariant}>
-                    Energy {chosen.energyImpact > 0 ? `+${chosen.energyImpact}` : chosen.energyImpact}
+                    {chosen.energyImpact === 'balance' 
+                      ? 'Back to Balance' 
+                      : `Energy ${chosen.energyImpact > 0 ? `+${chosen.energyImpact}` : chosen.energyImpact}`}
                   </Pill>
                 </div>
                 <p
@@ -171,62 +130,6 @@ export default function ChoiceCard({
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-
-      {/* Action button */}
-      <div className="px-5 pb-5">
-        {phase === 'reading' ? (
-          <button
-            onClick={onConfirm}
-            disabled={!selectedOption}
-            className="w-full py-3 rounded-xl font-semibold text-white transition-all active:scale-95"
-            style={{
-              backgroundColor: selectedOption ? '#930018' : '#C9A0A8',
-              fontFamily: '"DM Sans", system-ui, sans-serif',
-              fontSize: 16,
-              cursor: selectedOption ? 'pointer' : 'not-allowed',
-            }}
-          >
-            Confirm
-          </button>
-        ) : (
-          <button
-            onClick={handleUnderstood}
-            className="w-full flex items-center justify-center gap-3 py-3 rounded-xl font-semibold text-white transition-all active:scale-95"
-            style={{
-              backgroundColor: '#930018',
-              fontFamily: '"DM Sans", system-ui, sans-serif',
-              fontSize: 16,
-            }}
-          >
-            <span>Understood</span>
-            <span style={{ opacity: 0.8 }}>→</span>
-
-            {/* Autoplay countdown ring */}
-            {autoplay && (
-              <svg width="28" height="28" viewBox="0 0 40 40" style={{ flexShrink: 0 }}>
-                <circle cx="20" cy="20" r="18" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="3" />
-                <circle
-                  cx="20" cy="20" r="18"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeDasharray={CIRCUMFERENCE}
-                  strokeDashoffset={CIRCUMFERENCE - progress}
-                  style={{
-                    transform: 'rotate(-90deg)',
-                    transformOrigin: '20px 20px',
-                    transition: 'stroke-dashoffset 1s linear',
-                  }}
-                />
-                <text x="20" y="25" textAnchor="middle" fontSize="14" fontWeight="700" fill="white" fontFamily="DM Sans, sans-serif">
-                  {countdown}
-                </text>
-              </svg>
-            )}
-          </button>
-        )}
       </div>
     </motion.div>
   )

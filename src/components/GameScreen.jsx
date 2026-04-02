@@ -8,6 +8,7 @@ import ChoiceCard from './cards/ChoiceCard.jsx'
 import HistoryPanel from './history/HistoryPanel.jsx'
 import GaugeToggle from './ui/GaugeToggle.jsx'
 import AutoplayButton from './ui/AutoplayButton.jsx'
+import ActionFooter from './ui/ActionFooter.jsx'
 
 export default function GameScreen({
   state,
@@ -82,7 +83,7 @@ export default function GameScreen({
       {/* Gauge */}
       <div
         style={{
-          backgroundColor: '#fff',
+          backgroundColor: 'transparent',
           borderBottom: '1px solid rgba(147,0,24,0.06)',
         }}
       >
@@ -93,13 +94,11 @@ export default function GameScreen({
       </div>
 
       {/* Card area */}
-      <div className="flex-1 p-4 pb-8">
+      <div className="flex-1 p-4 pb-2">
         {currentCard.type === 'environment' ? (
           <EnvironmentCard
             key={currentCard.id}
             card={currentCard}
-            autoplay={autoplay}
-            onAcknowledge={onAcknowledgeEnv}
           />
         ) : (
           <ChoiceCard
@@ -107,13 +106,20 @@ export default function GameScreen({
             card={currentCard}
             selectedOption={selectedOption}
             phase={phase}
-            autoplay={autoplay}
             onSelectOption={onSelectOption}
-            onConfirm={onConfirm}
-            onAcknowledge={onAcknowledgeChoice}
           />
         )}
       </div>
+
+      {/* Action Footer */}
+      <ActionFooter
+        card={currentCard}
+        phase={phase}
+        selectedOption={selectedOption}
+        autoplay={autoplay}
+        onConfirm={onConfirm}
+        onAcknowledge={currentCard.type === 'environment' ? onAcknowledgeEnv : onAcknowledgeChoice}
+      />
 
       {/* History panel */}
       <HistoryPanel
