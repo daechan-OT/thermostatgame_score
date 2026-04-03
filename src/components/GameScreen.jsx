@@ -44,7 +44,7 @@ export default function GameScreen({
   return (
     <div
       style={{
-        minHeight: '100dvh',
+        height: '100%',
         backgroundColor: '#FFF9EF',
         display: 'flex',
         flexDirection: 'column',
@@ -87,6 +87,30 @@ export default function GameScreen({
         />
 
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          {history.length > 0 && (
+            <button
+              onClick={handleToggleHistory}
+              aria-label="Open leadership log"
+              style={{
+                width: 32,
+                height: 32,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '50%',
+                border: '1.5px solid rgba(147,0,24,0.25)',
+                backgroundColor: 'transparent',
+                color: '#930018',
+                cursor: 'pointer',
+                flexShrink: 0,
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="9" />
+                <polyline points="12 7 12 12 15 15" />
+              </svg>
+            </button>
+          )}
           <GaugeToggle view={gaugeView} onToggle={onToggleGaugeView} />
         </div>
       </header>
@@ -95,7 +119,6 @@ export default function GameScreen({
       <div
         style={{
           backgroundColor: 'transparent',
-          borderBottom: '1px solid rgba(147,0,24,0.06)',
           minHeight: 160,
           display: 'flex',
           alignItems: 'center',
@@ -131,10 +154,19 @@ export default function GameScreen({
         </AnimatePresence>
       </div>
 
-      {/* Card Stack / Deck Area */}
+      {/* Card Stack / Deck Area — fills all remaining space between gauge and fixed footer */}
       <div
-        className="relative flex flex-col px-8 pt-10 pb-2 overflow-visible"
-        style={{ isolation: 'isolate', height: 'calc(var(--card-height) + 80px)' }}
+        className="relative flex flex-col"
+        style={{
+          isolation: 'isolate',
+          flex: 1,
+          minHeight: 0,
+          overflow: 'visible',
+          paddingTop: 'var(--card-area-pt)',
+          paddingLeft: 'var(--card-area-px)',
+          paddingRight: 'var(--card-area-px)',
+          paddingBottom: 'calc(var(--footer-height) + 8px)',
+        }}
       >
         {/* The physical history stack (Behind) */}
         <HistoryStack

@@ -9,6 +9,7 @@ export const CARD_RADIUS = 20
 export const CARD_BORDER = '2px solid #930018'
 export const CARD_HEIGHT = 'var(--card-height)'
 export const CARD_PADDING = '24px 22px'
+export const CARD_SHADOW = '0 4px 10px rgba(64, 0, 15, 0.18), 0 12px 28px rgba(64, 0, 15, 0.13)'
 
 // ── Crown + type label ────────────────────────────────────────────────────────
 
@@ -133,6 +134,7 @@ export default function CardShell({ bg = '#FFF9EF', children, style = {} }) {
       textAlign: 'center',
       overflowY: 'auto',
       boxSizing: 'border-box',
+      boxShadow: CARD_SHADOW,
       ...style,
     }}>
       {children}

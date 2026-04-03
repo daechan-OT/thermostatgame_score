@@ -118,8 +118,8 @@ export default function ChoiceDemoStep({ onNext, onEnergyChange }) {
         />
       </div>
 
-      {/* Action button */}
-      <div style={{ marginTop: 16, flexShrink: 0 }}>
+      {/* Action button — matches fixed footer position */}
+      <div style={{ marginTop: 16, flexShrink: 0, paddingBottom: 32 }}>
         <motion.button
           animate={{ opacity: hasSelection && !isRevealed ? 1 : 0.3 }}
           whileTap={hasSelection && !isRevealed ? { scale: 0.97 } : {}}

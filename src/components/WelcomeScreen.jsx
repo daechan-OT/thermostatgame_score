@@ -26,7 +26,7 @@ export default function WelcomeScreen({ onStart }) {
   return (
     <div
       style={{
-        minHeight: '100dvh',
+        height: '100%',
         backgroundColor: '#FFF9EF',
         display: 'flex',
         flexDirection: 'column',
@@ -92,6 +92,8 @@ export default function WelcomeScreen({ onStart }) {
           display: 'flex',
           flexDirection: 'column',
           minHeight: 0,
+          /* pad bottom so content never hides behind fixed footer on non-demo steps */
+          paddingBottom: isSelfNav ? 0 : 'var(--footer-height)',
         }}
       >
         <AnimatePresence mode="wait">
@@ -112,7 +114,7 @@ export default function WelcomeScreen({ onStart }) {
         </AnimatePresence>
       </div>
 
-      {/* ── Container Next button (hidden for self-navigating demo steps) ── */}
+      {/* ── Container Next button — fixed to screen bottom, hidden for self-navigating demo steps ── */}
       <AnimatePresence>
         {!isSelfNav && (
           <motion.div
@@ -120,7 +122,17 @@ export default function WelcomeScreen({ onStart }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
             transition={{ duration: 0.2 }}
-            style={{ padding: '14px 24px 36px', flexShrink: 0 }}
+            style={{
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              maxWidth: 480,
+              marginInline: 'auto',
+              zIndex: 20,
+              backgroundColor: '#FFF9EF',
+              padding: '14px 24px 36px',
+            }}
           >
             <motion.button
               onClick={goNext}

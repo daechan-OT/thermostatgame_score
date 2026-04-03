@@ -61,38 +61,12 @@ export default function HistoryStack({ history, isExpanded, onToggle }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 flex items-center justify-center pt-4"
-            style={{ zIndex: 1 }}
+            className="absolute inset-0 flex items-start justify-center"
+            style={{ zIndex: 1, paddingTop: 'var(--card-area-pt)' }}
           >
-            {history.length > 0 && (
-              <button
-                onClick={onToggle}
-                style={{
-                  position: 'absolute',
-                  top: -30,
-                  right: 20,
-                  backgroundColor: '#FFF9EF',
-                  border: '1.5px solid rgba(147,0,24,0.2)',
-                  color: '#930018',
-                  fontFamily: '"DM Sans", sans-serif',
-                  fontSize: 10,
-                  fontWeight: 800,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  cursor: 'pointer',
-                  padding: '5px 12px',
-                  borderRadius: 99,
-                  pointerEvents: 'auto',
-                  boxShadow: '0 2px 4px rgba(64,0,15,0.06)',
-                }}
-              >
-                LOG: {history.length}
-              </button>
-            )}
-
             <div style={{
               position: 'relative',
-              width: 'calc(100% - 64px)',
+              width: 'calc(100% - 2 * var(--card-area-px))',
               height: 'var(--card-height)',
               display: 'flex',
               alignItems: 'center',

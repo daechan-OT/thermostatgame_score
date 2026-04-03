@@ -1,19 +1,49 @@
 // GaugeBar — horizontal segmented bar gauge, -5 to +5
 
-function getZoneColor(val) {
-  if (val <= -3) return '#D6E0FF'
-  if (val <= -1) return '#9BB4FF'
-  if (val <=  1) return '#D0FCA1'
-  if (val <=  3) return '#FFADB0'
-  return '#930018'
+import { useEffect, useRef } from 'react'
+import { motion, useAnimation } from 'framer-motion'
+
+// BAR_TRANSITION_MS must match the Tailwind duration-700 on the active indicator below.
+// The shake waits this long so the bar finishes sliding before the wrapper shakes.
+const BAR_TRANSITION_MS = 720
+
+const shakeVariants = {
+  warn:   { x: [0, -2, 2, -1.5, 1.5, 0], rotate: [0, -0.4, 0.4, -0.3, 0.3, 0] },
+  danger: { x: [0, -4, 4, -3, 3, -2, 2, 0], rotate: [0, -0.8, 0.8, -0.6, 0.6, -0.4, 0.4, 0] },
 }
 
 // Each segment: integer slot from -5 to +4 (10 slots)
 const SLOTS = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
 
 export default function GaugeBar({ energy }) {
+  const absEnergy = Math.abs(energy)
+  const shakeKey = absEnergy >= 4 ? 'danger' : absEnergy >= 3 ? 'warn' : 'calm'
+
+  const controls = useAnimation()
+  const timerRef = useRef(null)
+
+  useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current)
+
+    controls.stop()
+    controls.set({ x: 0, rotate: 0 })
+
+    if (shakeKey === 'calm') return
+
+    timerRef.current = setTimeout(() => {
+      const duration    = shakeKey === 'danger' ? 0.35 : 0.5
+      const repeatDelay = shakeKey === 'danger' ? 0.6  : 1.2
+      controls.start({
+        ...shakeVariants[shakeKey],
+        transition: { duration, repeat: Infinity, repeatDelay, ease: 'easeInOut' },
+      })
+    }, BAR_TRANSITION_MS)
+
+    return () => clearTimeout(timerRef.current)
+  }, [energy])
+
   return (
-    <div className="w-full px-8 py-5">
+    <motion.div animate={controls} className="w-full px-8 py-5">
       {/* Container for the bar and its markers */}
       <div className="relative mb-8">
         
@@ -121,9 +151,9 @@ export default function GaugeBar({ energy }) {
       <div className="flex justify-center">
         <span
           style={{
-            fontFamily: '"Playfair Display", Georgia, serif',
-            fontSize: 32,
-            fontWeight: 700,
+            fontFamily: '"DM Sans", system-ui, sans-serif',
+            fontSize: 36,
+            fontWeight: 800,
             color: energy === 0 ? '#40000F' : (energy > 0 ? '#930018' : '#004E93'),
             lineHeight: 1,
             transition: 'all 600ms ease-in-out',
@@ -132,6 +162,6 @@ export default function GaugeBar({ energy }) {
           {energy > 0 ? `+${energy}` : energy}
         </span>
       </div>
-    </div>
+    </motion.div>
   )
 }

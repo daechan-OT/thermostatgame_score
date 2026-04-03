@@ -78,8 +78,8 @@ export default function EnvDemoStep({ onNext, startEnergy = 0 }) {
         />
       </div>
 
-      {/* Action button */}
-      <div style={{ marginTop: 16, flexShrink: 0 }}>
+      {/* Action button — matches fixed footer position */}
+      <div style={{ marginTop: 16, flexShrink: 0, paddingBottom: 32 }}>
         <motion.button
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: understood ? 0.3 : 1, y: 0 }}

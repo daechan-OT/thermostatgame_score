@@ -133,13 +133,13 @@ export const CARD_DECK = [
       {
         id: "A",
         text: "This isn't the right time.",
-        energyImpact: "balance",
+        energyImpact: -1,
         educationalMessage: "They go quiet. The tension between them hardens for the rest of the shift.",
       },
       {
         id: "B",
         text: "I hear you. Give me 5 minutes.",
-        energyImpact: -1,
+        energyImpact: "balance",
         educationalMessage: "You hold the boundary without dismissing them. They feel seen, not sidelined.",
       },
     ],
@@ -149,7 +149,7 @@ export const CARD_DECK = [
     type: "choice",
     label: "Your Move",
     title: "The $40 Mistake",
-    description: "A team member just remade a large order wrong. The guest is annoyed. Everyone saw it.",
+    description: "A team member just made a large order wrong. The guest is annoyed. Everyone saw it.",
     options: [
       {
         id: "A",
@@ -216,7 +216,7 @@ export const CARD_DECK = [
     options: [
       {
         id: "A",
-        text: "Let the team know.",
+        text: "We're short staffed again. Sorry.",
         energyImpact: +1,
         educationalMessage: "\"We're short again.\" Every person on shift tenses up.",
       },

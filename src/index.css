@@ -15,6 +15,17 @@
    * Used by active cards, history mini cards, and the stack container.
    */
   --card-height: clamp(320px, 46dvh, 500px);
+
+  /* Footer height token — used to pad content so it never hides behind the fixed footer */
+  --footer-height: 88px;
+
+  /*
+   * Card area positioning tokens.
+   * Both the active card and the history deck behind it
+   * use these values — change here to move everything in sync.
+   */
+  --card-area-px: 16px;   /* horizontal inset from screen edge */
+  --card-area-pt: 16px;   /* top offset inside the card area */
   --color-bg-primary: #FFF9EF;
   --color-bg-light: #FFDEE5;
   --color-bg-soft-blue: #D6E0FF;
@@ -36,6 +47,8 @@
 }
 
 html, body {
+  height: 100%;
+  overflow: hidden;
   margin: 0;
   padding: 0;
   background-color: var(--color-bg-primary);
@@ -45,7 +58,8 @@ html, body {
 }
 
 #root {
-  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }

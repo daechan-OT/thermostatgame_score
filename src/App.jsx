@@ -108,7 +108,8 @@ export default function App() {
   return (
     <div
       style={{
-        minHeight: '100dvh',
+        height: '100dvh',
+        overflow: 'hidden',
         backgroundColor: '#FFF9EF',
         display: 'flex',
         flexDirection: 'column',
@@ -119,7 +120,7 @@ export default function App() {
         {screen === 'welcome' && (
           <motion.div
             key="welcome"
-            style={{ width: '100%' }}
+            style={{ width: '100%', height: '100%' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -132,7 +133,7 @@ export default function App() {
         {(screen === 'game' || screen === 'win' || screen === 'lose') && (
           <motion.div
             key="game"
-            style={{ width: '100%' }}
+            style={{ width: '100%', height: '100%' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

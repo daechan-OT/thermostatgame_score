@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
-import CardShell, { TypeHeader, CardTitle, CardDescription } from './CardShell.jsx'
+import CardShell, { TypeHeader, CardTitle, CardDescription, CARD_SHADOW } from './CardShell.jsx'
 
 export function getChoiceImpactLabel(impact) {
   if (impact === 'balance') return '1 Back to Balance'
   if (impact > 0) return `+${impact} (Meltdown)`
   if (impact < 0) return `${impact} (Deepfreeze)`
-  return '0 (Balanced)'
+  return 'No Impact'
 }
 
 // ── Option button (reading phase) ─────────────────────────────────────────────
@@ -168,6 +168,7 @@ export default function ChoiceCard({ card, selectedOption, phase, onSelectOption
             padding: '28px 20px',
             overflowY: 'auto',
             boxSizing: 'border-box',
+            boxShadow: CARD_SHADOW,
           }}>
             <h2 style={{
               fontFamily: '"Playfair Display", Georgia, serif',

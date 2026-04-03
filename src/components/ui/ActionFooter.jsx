@@ -66,10 +66,15 @@ export default function ActionFooter({
   return (
     <div
       style={{
-        padding: '0 16px 32px 16px',
-        width: '100%',
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
         maxWidth: 480,
-        backgroundColor: 'transparent',
+        marginInline: 'auto',
+        zIndex: 20,
+        padding: '0 16px 32px 16px',
+        backgroundColor: '#FFF9EF',
       }}
     >
       {card.type === 'choice' && phase === 'reading' ? (
