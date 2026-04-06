@@ -72,7 +72,7 @@ function calcChoicePoints(card, chosenId, energy, cardStartTime) {
 
   const timingBonus = cardStartTime && (Date.now() - cardStartTime) < 6000 ? 1 : 0
 
-  return { earned: base + timingBonus, possible: 3 }
+  return { earned: base + timingBonus, possible: 2 }
 }
 
 export function useGameState() {

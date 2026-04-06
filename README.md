@@ -180,9 +180,9 @@ This guarantees every game starts with player agency and never punishes players 
 
 Scoring applies to **choice cards only**. Environment cards are outside the player's control and do not affect the score.
 
-### Per Choice (0–3 points)
+### Base points (0–2 per choice)
 
-**Base points** compare what actually happened to what would have happened:
+Compares what actually happened to what would have happened with the other option:
 
 | Outcome | Points |
 |---|---|
@@ -190,7 +190,9 @@ Scoring applies to **choice cards only**. Environment cards are outside the play
 | Both options were equally close to 0 (tie) | 1 |
 | Chosen option moved energy further from 0 | 0 |
 
-**Timing bonus** rewards decisive leadership under pressure:
+### Timing bonus (true bonus, not included in possible)
+
+Rewards decisive leadership under pressure:
 
 | Decision time | Bonus |
 |---|---|
@@ -200,10 +202,12 @@ Scoring applies to **choice cards only**. Environment cards are outside the play
 ### Final Score
 
 ```
-score % = (total points earned ÷ total points possible) × 100
+score % = (total points earned ÷ total base points possible) × 100
 ```
 
-The denominator adjusts to however many choice cards appeared in that game, making scores fair regardless of deck composition.
+`total base points possible = choice card count × 2`
+
+The timing bonus is earned on top of this — fast, accurate decisions can push the score above 100%. The denominator only reflects base points so the bonus remains a genuine reward rather than a ceiling adjustment.
 
 ### Score Tiers
 
