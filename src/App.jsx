@@ -155,7 +155,7 @@ export default function App() {
             {/* Win/Lose modals — overlay on top of game screen */}
             <AnimatePresence>
               {screen === 'win' && (
-                <WinModal key="win" onRestart={restartGame} />
+                <WinModal key="win" onRestart={restartGame} score={state.score} maxScore={state.maxScore} />
               )}
               {screen === 'lose' && (
                 <LoseModal key="lose" energy={energy} onRestart={restartGame} />

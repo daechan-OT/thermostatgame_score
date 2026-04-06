@@ -45,6 +45,34 @@ const INITIAL_STATE = {
   autoplay: false,
   gaugeView: 'arc',
   historyOpen: false,
+  score: 0,
+  maxScore: 0,
+  cardStartTime: null,
+}
+
+function resolveImpact(impact, energy) {
+  if (impact === 'balance') return energy > 0 ? -1 : energy < 0 ? 1 : 0
+  return impact
+}
+
+function calcChoicePoints(card, chosenId, energy, cardStartTime) {
+  const chosen = card.options.find(o => o.id === chosenId)
+  const other  = card.options.find(o => o.id !== chosenId)
+  if (!chosen || !other) return { earned: 0, possible: 3 }
+
+  const chosenResolved = resolveImpact(chosen.energyImpact, energy)
+  const otherResolved  = resolveImpact(other.energyImpact,  energy)
+
+  const chosenDist = Math.abs(energy + chosenResolved)
+  const otherDist  = Math.abs(energy + otherResolved)
+
+  let base = 0
+  if (chosenDist < otherDist)       base = 2
+  else if (chosenDist === otherDist) base = 1
+
+  const timingBonus = cardStartTime && (Date.now() - cardStartTime) < 6000 ? 1 : 0
+
+  return { earned: base + timingBonus, possible: 3 }
 }
 
 export function useGameState() {
@@ -73,6 +101,9 @@ export function useGameState() {
       autoplay: false,
       gaugeView: 'arc',
       historyOpen: false,
+      score: 0,
+      maxScore: 0,
+      cardStartTime: Date.now(),
     })
     setDisplayEnergy(0)
   }, [])
@@ -89,7 +120,15 @@ export function useGameState() {
   const confirmChoice = useCallback(() => {
     setState(prev => {
       if (prev.phase !== 'reading' || !prev.selectedOption) return prev
-      return { ...prev, phase: 'revealed' }
+      const { earned, possible } = calcChoicePoints(
+        prev.currentCard, prev.selectedOption, prev.energy, prev.cardStartTime
+      )
+      return {
+        ...prev,
+        phase: 'revealed',
+        score: prev.score + earned,
+        maxScore: prev.maxScore + possible,
+      }
     })
   }, [])
 
@@ -149,6 +188,7 @@ export function useGameState() {
           energy: newEnergy,
           round: newRound,
           history: [...s.history, historyEntry],
+          cardStartTime: Date.now(),
         }))
       }, 650)
 

@@ -18,7 +18,14 @@
       "Read(//opt/homebrew/bin/**)",
       "Bash(ls ~/.nvm/versions/node/*/bin/node)",
       "Read(//usr/bin/**)",
-      "Read(//usr/**)"
+      "Read(//usr/**)",
+      "Bash(ls /usr/local/bin/npm*)",
+      "Bash(/usr/local/bin/npm --version)",
+      "Read(//Users/daechan/.volta/**)",
+      "Read(//Users/daechan/**)",
+      "Bash(command -v node)",
+      "Bash(/usr/local/lib/node_modules/npm/bin/npm-cli.js install:*)",
+      "Bash(/System/Volumes/Data/usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js install canvas-confetti)"
     ]
   }
 }
