@@ -122,7 +122,7 @@ export default function MetaphorStep() {
         opacity: 0.8,
       }}>
         A thermometer only <em>reads</em> the room. A thermostat <strong>sets</strong> it.
-        Two kinds of events move the gauge — and only one is yours to own.
+        The environment will throw things at you — but your response is what shapes the energy of your team.
       </p>
 
       {/* ── Three card-type legend ── */}
@@ -258,7 +258,7 @@ export default function MetaphorStep() {
               lineHeight: 1.75,
               margin: '12px 0 12px',
             }}>
-              Emotions move through teams like temperature through a room — quietly and automatically. When a manager walks in tense, stress hormones in the brain spike across the team within minutes. Things start to slip. People pull back.
+              Emotions move through teams the way temperature moves through a room: quietly and automatically. When a manager walks in tense, stress hormones in the brain spike across the team within minutes. Things start to slip. People pull back.
             </p>
             <p style={{
               fontFamily: '"DM Sans", system-ui, sans-serif',
@@ -267,7 +267,7 @@ export default function MetaphorStep() {
               lineHeight: 1.75,
               margin: 0,
             }}>
-              When you stay regulated — not robotic, but <strong>steady</strong> — your team has permission to stay calm too. That's not soft leadership. That's the <strong>most powerful lever</strong> you have as a manager.
+              When you stay <strong>steady</strong> (not robotic, just grounded), your team has permission to stay calm too. That's not soft leadership. That's the <strong>most powerful lever</strong> you have as a manager.
             </p>
           </div>
         )}
